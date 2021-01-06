@@ -5,10 +5,12 @@
 
 mod linear_rgb;
 mod oklab;
+mod srgb;
 mod xyz;
 
 pub use linear_rgb::LinearRgb;
 pub use oklab::Oklab;
+pub use srgb::Srgb;
 pub use xyz::Xyz;
 
 /// A trait that describes what behavior a color must have to interoperate with the rest of the system.
