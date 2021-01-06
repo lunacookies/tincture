@@ -4,6 +4,8 @@
 
 mod oklab;
 mod rgb;
+mod xyz;
 
 pub use oklab::Oklab;
 pub use rgb::Rgb;
+pub use xyz::Xyz;
