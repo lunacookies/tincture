@@ -1,7 +1,7 @@
 /// A color from the [Oklab] color space.
 ///
 /// [Oklab]: https://bottosson.github.io/posts/oklab/
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Oklab {
     /// Lightness.
     /// 0 is complete black, 1 is the brightest white.

@@ -1,7 +1,7 @@
 /// A color from the CIE 1931 XYZ color space.
 ///
 /// It is assumed that the color’s illuminant and observer are the standard D65 and 2-degree.
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Xyz {
     /// A mixture of cone cell response curves chosen by the CIE to be nonnegative.
     /// Ranges from 0 to 0.95047003.

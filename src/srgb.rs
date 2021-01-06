@@ -1,5 +1,5 @@
 /// An sRGB color.
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Srgb {
     /// Red (0 to 1).
     pub r: f32,

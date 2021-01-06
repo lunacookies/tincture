@@ -1,5 +1,5 @@
 /// An RGB color without gamma correction.
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct LinearRgb {
     /// Red (0 to 1).
     pub r: f32,

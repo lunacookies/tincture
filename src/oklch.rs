@@ -1,7 +1,7 @@
 /// A color from the polar variant of the [Oklab] color space.
 ///
 /// [Oklab]: https://bottosson.github.io/posts/oklab/
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Oklch {
     /// Lightness.
     /// 0 is complete black, 1 is the brightest white.

@@ -1,5 +1,5 @@
 /// The hue of a color.
-#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
 pub struct Hue {
     pub(crate) unnormalized_degrees: f32,
 }
