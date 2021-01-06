@@ -9,6 +9,6 @@ keywords = ["color", "colorspace", "rgb"]
 license = "MIT OR Apache-2.0"
 name = "tincture"
 repository = "https://github.com/arzg/tincture"
-version = "0.1.1"
+version = "0.2.0"
 
 [dependencies]
