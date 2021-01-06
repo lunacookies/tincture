@@ -42,8 +42,8 @@ impl From<crate::Oklch> for Oklab {
     fn from(oklch: crate::Oklch) -> Self {
         Self {
             l: oklch.l,
-            a: oklch.c * oklch.h.unnormalized_degrees.cos(),
-            b: oklch.c * oklch.h.unnormalized_degrees.sin(),
+            a: oklch.c * oklch.h.unnormalized_radians.cos(),
+            b: oklch.c * oklch.h.unnormalized_radians.sin(),
         }
     }
 }

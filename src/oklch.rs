@@ -23,7 +23,7 @@ impl From<crate::Oklab> for Oklch {
             l: oklab.l,
             c: geometric_mean(oklab.a, oklab.b),
             h: crate::Hue {
-                unnormalized_degrees: oklab.b.atan2(oklab.a).to_degrees(),
+                unnormalized_radians: oklab.b.atan2(oklab.a),
             },
         }
     }
@@ -34,7 +34,7 @@ impl crate::ColorSpace for Oklch {
         l: 0.0,
         c: 0.0,
         h: crate::Hue {
-            unnormalized_degrees: 0.0,
+            unnormalized_radians: 0.0,
         },
     };
 
@@ -42,7 +42,7 @@ impl crate::ColorSpace for Oklch {
         l: 1.0,
         c: 0.0,
         h: crate::Hue {
-            unnormalized_degrees: 0.0,
+            unnormalized_radians: 0.0,
         },
     };
 }
