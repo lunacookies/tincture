@@ -49,7 +49,7 @@ impl From<crate::Oklch> for Oklab {
 }
 
 #[allow(clippy::many_single_char_names)]
-impl crate::Color for Oklab {
+impl crate::CoreColorSpace for Oklab {
     fn from_xyz(xyz: crate::Xyz) -> Self {
         let l = M1[0][0] * xyz.x + M1[0][1] * xyz.y + M1[0][2] * xyz.z;
         let m = M1[1][0] * xyz.x + M1[1][1] * xyz.y + M1[1][2] * xyz.z;

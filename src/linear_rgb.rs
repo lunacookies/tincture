@@ -9,7 +9,7 @@ pub struct LinearRgb {
     pub b: f32,
 }
 
-impl crate::Color for LinearRgb {
+impl crate::CoreColorSpace for LinearRgb {
     fn from_xyz(xyz: crate::Xyz) -> Self {
         let r = xyz.x * 3.2404542 + xyz.y * -1.5371385 + xyz.z * -0.4985314;
         let g = xyz.x * -0.9692660 + xyz.y * 1.8760108 + xyz.z * 0.0415560;

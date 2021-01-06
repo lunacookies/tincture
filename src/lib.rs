@@ -23,8 +23,9 @@
 //! );
 //! ```
 //!
-//! Variations on the core color spaces do not implement the necessary trait to use [`convert`] directly.
-//! Instead, they implement `From<ACoreColorSpace>`, allowing you to convert this variation to its corresponding core color space and call [`convert`]:
+//! Variations on the core color spaces do not implement [`CoreColorSpace`], which is necessary for [`convert`].
+//! Instead, they implement `From<ACoreColorSpace>`, allowing you to convert this variation to its corresponding core color space and call [`convert`].
+//! Examples of variations include [`Oklch`] (a variation on [`Oklab`]) and [`Srgb`] (a variation on [`LinearRgb`]).
 //!
 //! ```
 //! use tincture::{Hue, LinearRgb, Oklab, Oklch, Srgb};
@@ -65,8 +66,8 @@ pub use oklch::Oklch;
 pub use srgb::Srgb;
 pub use xyz::Xyz;
 
-/// A trait that describes what behavior a color must have to interoperate with the rest of the system.
-pub trait Color {
+/// A color space that can be converted to any other `CoreColorSpace`.
+pub trait CoreColorSpace {
     /// Convert a color in the XYZ color space to the color space that `Self` represents.
     fn from_xyz(xyz: Xyz) -> Self;
 
@@ -75,7 +76,7 @@ pub trait Color {
 }
 
 /// Convert a color from one color space to another.
-pub fn convert<In: Color, Out: Color>(color: In) -> Out {
+pub fn convert<In: CoreColorSpace, Out: CoreColorSpace>(color: In) -> Out {
     let xyz = color.to_xyz();
     Out::from_xyz(xyz)
 }

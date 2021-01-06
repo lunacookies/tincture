@@ -14,7 +14,7 @@ pub struct Xyz {
     pub z: f32,
 }
 
-impl crate::Color for Xyz {
+impl crate::CoreColorSpace for Xyz {
     fn from_xyz(xyz: Xyz) -> Self {
         xyz
     }
