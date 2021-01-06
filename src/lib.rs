@@ -3,12 +3,12 @@
 #![warn(missing_debug_implementations, missing_docs, rust_2018_idioms)]
 #![allow(clippy::excessive_precision)]
 
+mod linear_rgb;
 mod oklab;
-mod rgb;
 mod xyz;
 
+pub use linear_rgb::LinearRgb;
 pub use oklab::Oklab;
-pub use rgb::Rgb;
 pub use xyz::Xyz;
 
 /// A trait that describes what behavior a color must have to interoperate with the rest of the system.

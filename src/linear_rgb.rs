@@ -1,6 +1,6 @@
-/// An RGB color.
+/// An RGB color without gamma correction.
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
-pub struct Rgb {
+pub struct LinearRgb {
     /// Red (0 to 1).
     r: f32,
     /// Green (0 to 1).
@@ -9,7 +9,7 @@ pub struct Rgb {
     b: f32,
 }
 
-impl crate::Color for Rgb {
+impl crate::Color for LinearRgb {
     fn from_xyz(xyz: crate::Xyz) -> Self {
         let r = xyz.x * 3.2404542 + xyz.y * -1.5371385 + xyz.z * -0.4985314;
         let g = xyz.x * -0.9692660 + xyz.y * 1.8760108 + xyz.z * 0.0415560;
