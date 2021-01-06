@@ -26,3 +26,21 @@ impl crate::Color for LinearRgb {
         }
     }
 }
+
+impl From<crate::Srgb> for LinearRgb {
+    fn from(srgb: crate::Srgb) -> Self {
+        let to_linear = |n: f32| {
+            if n <= 0.04045 {
+                n / 12.92
+            } else {
+                ((n + 0.055) / 1.055).powf(2.4)
+            }
+        };
+
+        Self {
+            r: to_linear(srgb.r),
+            g: to_linear(srgb.g),
+            b: to_linear(srgb.b),
+        }
+    }
+}
