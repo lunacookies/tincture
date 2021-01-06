@@ -38,6 +38,16 @@ const M2_INV: [[f32; 3]; 3] = [
     [1.0000000547, -0.0894841821, -1.2914855379],
 ];
 
+impl From<crate::Oklch> for Oklab {
+    fn from(oklch: crate::Oklch) -> Self {
+        Self {
+            l: oklch.l,
+            a: oklch.c * oklch.h.unnormalized_degrees.cos(),
+            b: oklch.c * oklch.h.unnormalized_degrees.sin(),
+        }
+    }
+}
+
 #[allow(clippy::many_single_char_names)]
 impl crate::Color for Oklab {
     fn from_xyz(xyz: crate::Xyz) -> Self {

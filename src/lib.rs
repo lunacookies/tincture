@@ -6,12 +6,14 @@
 mod hue;
 mod linear_rgb;
 mod oklab;
+mod oklch;
 mod srgb;
 mod xyz;
 
 pub use hue::Hue;
 pub use linear_rgb::LinearRgb;
 pub use oklab::Oklab;
+pub use oklch::Oklch;
 pub use srgb::Srgb;
 pub use xyz::Xyz;
 
