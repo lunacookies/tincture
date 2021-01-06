@@ -13,3 +13,13 @@ pub struct Xyz {
     /// Ranges from 0 (no blue) to 1.08883 (maxiumum blue).
     pub z: f32,
 }
+
+impl crate::Color for Xyz {
+    fn from_xyz(xyz: Xyz) -> Self {
+        xyz
+    }
+
+    fn to_xyz(self) -> Xyz {
+        self
+    }
+}
