@@ -26,3 +26,23 @@ impl From<crate::LinearRgb> for Srgb {
         }
     }
 }
+
+impl crate::Hex for Srgb {
+    fn components(self) -> (f32, f32, f32) {
+        (self.r, self.g, self.b)
+    }
+}
+
+#[cfg(test)]
+#[test]
+fn hex() {
+    use crate::Hex;
+
+    let rgb = Srgb {
+        r: 1.0,
+        g: 0.25,
+        b: 1.0,
+    };
+
+    assert_eq!(rgb.hex(), 0xff40ff);
+}
