@@ -23,7 +23,7 @@ impl From<crate::Oklab> for Oklch {
             l: oklab.l,
             c: geometric_mean(oklab.a, oklab.b),
             h: crate::Hue {
-                unnormalized_degrees: oklab.b.atan2(oklab.a),
+                unnormalized_degrees: oklab.b.atan2(oklab.a).to_degrees(),
             },
         }
     }
