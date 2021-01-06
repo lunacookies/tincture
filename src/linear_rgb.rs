@@ -2,11 +2,11 @@
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
 pub struct LinearRgb {
     /// Red (0 to 1).
-    r: f32,
+    pub r: f32,
     /// Green (0 to 1).
-    g: f32,
+    pub g: f32,
     /// Blue (0 to 1).
-    b: f32,
+    pub b: f32,
 }
 
 impl crate::Color for LinearRgb {
