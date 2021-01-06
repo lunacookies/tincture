@@ -3,11 +3,13 @@
 #![warn(missing_debug_implementations, missing_docs, rust_2018_idioms)]
 #![allow(clippy::excessive_precision)]
 
+mod hue;
 mod linear_rgb;
 mod oklab;
 mod srgb;
 mod xyz;
 
+pub use hue::Hue;
 pub use linear_rgb::LinearRgb;
 pub use oklab::Oklab;
 pub use srgb::Srgb;
