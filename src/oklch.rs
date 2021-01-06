@@ -28,3 +28,21 @@ impl From<crate::Oklab> for Oklch {
         }
     }
 }
+
+impl crate::ColorSpace for Oklch {
+    const BLACK: Self = Self {
+        l: 0.0,
+        c: 0.0,
+        h: crate::Hue {
+            unnormalized_degrees: 0.0,
+        },
+    };
+
+    const WHITE: Self = Self {
+        l: 1.0,
+        c: 0.0,
+        h: crate::Hue {
+            unnormalized_degrees: 0.0,
+        },
+    };
+}

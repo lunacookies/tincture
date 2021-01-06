@@ -46,6 +46,15 @@
 //! // `Srgb` is a variant of `LinearRgb`, so we again create one using `From`.
 //! let srgb = Srgb::from(linear_rgb);
 //! ```
+//!
+//! _All_ color spaces implement [`ColorSpace`], which provides the constants `BLACK` and `WHITE`:
+//!
+//! ```
+//! use tincture::{ColorSpace, Srgb};
+//!
+//! assert_eq!(Srgb::BLACK, Srgb { r: 0.0, g: 0.0, b: 0.0 });
+//! assert_eq!(Srgb::WHITE, Srgb { r: 1.0, g: 1.0, b: 1.0 });
+//! ```
 
 #![warn(missing_debug_implementations, missing_docs, rust_2018_idioms)]
 #![allow(clippy::excessive_precision)]
@@ -73,6 +82,15 @@ pub trait CoreColorSpace {
 
     /// Convert the color of `Self` to the XYZ color space.
     fn to_xyz(self) -> Xyz;
+}
+
+/// A color space.
+pub trait ColorSpace {
+    /// The color ‘black’.
+    const BLACK: Self;
+
+    /// The color ‘white’.
+    const WHITE: Self;
 }
 
 /// Convert a color from one color space to another.

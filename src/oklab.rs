@@ -48,6 +48,20 @@ impl From<crate::Oklch> for Oklab {
     }
 }
 
+impl crate::ColorSpace for Oklab {
+    const BLACK: Self = Self {
+        l: 0.0,
+        a: 0.0,
+        b: 0.0,
+    };
+
+    const WHITE: Self = Self {
+        l: 1.0,
+        a: 0.0,
+        b: 0.0,
+    };
+}
+
 #[allow(clippy::many_single_char_names)]
 impl crate::CoreColorSpace for Oklab {
     fn from_xyz(xyz: crate::Xyz) -> Self {

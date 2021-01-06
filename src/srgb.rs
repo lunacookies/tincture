@@ -27,6 +27,20 @@ impl From<crate::LinearRgb> for Srgb {
     }
 }
 
+impl crate::ColorSpace for Srgb {
+    const BLACK: Self = Self {
+        r: 0.0,
+        g: 0.0,
+        b: 0.0,
+    };
+
+    const WHITE: Self = Self {
+        r: 1.0,
+        g: 1.0,
+        b: 1.0,
+    };
+}
+
 impl crate::Hex for Srgb {
     fn components(self) -> (f32, f32, f32) {
         (self.r, self.g, self.b)
