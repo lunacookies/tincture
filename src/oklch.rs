@@ -17,11 +17,9 @@ pub struct Oklch {
 
 impl From<crate::Oklab> for Oklch {
     fn from(oklab: crate::Oklab) -> Self {
-        let geometric_mean = |x: f32, y: f32| (x.powi(2) + y.powi(2)).sqrt();
-
         Self {
             l: oklab.l,
-            c: geometric_mean(oklab.a, oklab.b),
+            c: (oklab.a.powi(2) + oklab.b.powi(2)).sqrt(),
             h: crate::Hue {
                 unnormalized_radians: oklab.b.atan2(oklab.a),
             },
