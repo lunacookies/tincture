@@ -10,6 +10,6 @@ license = "MIT OR Apache-2.0"
 name = "tincture"
 readme = "README.md"
 repository = "https://github.com/arzg/tincture"
-version = "0.4.2"
+version = "0.4.3"
 
 [dependencies]
