@@ -19,7 +19,7 @@ impl Hue {
     }
 
     /// The hue in degrees (from 0 to 360).
-    pub fn degrees(self) -> f32 {
+    pub fn to_degrees(self) -> f32 {
         let unnormalized_degrees = self.unnormalized_radians.to_degrees();
 
         if unnormalized_degrees < 0.0 {
