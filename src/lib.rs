@@ -34,7 +34,7 @@
 //! let peach = Oklch {
 //!     l: 0.8,
 //!     c: 0.25,
-//!     h: Hue::from_degrees(40.0),
+//!     h: Hue::from_degrees(40.0).unwrap(),
 //! };
 //!
 //! // This means we can create an `Oklab` using `From`.
