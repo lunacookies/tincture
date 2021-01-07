@@ -55,6 +55,27 @@
 //! assert_eq!(Srgb::BLACK, Srgb { r: 0.0, g: 0.0, b: 0.0 });
 //! assert_eq!(Srgb::WHITE, Srgb { r: 1.0, g: 1.0, b: 1.0 });
 //! ```
+//!
+//! [`ColorSpace`] also provides the [`in_bounds`] method:
+//!
+//! ```
+//! use tincture::{ColorSpace, Srgb};
+//!
+//! let out_of_bounds = Srgb {
+//!     r: 2.0,
+//!     g: -100.0,
+//!     b: 0.5,
+//! };
+//!
+//! let in_bounds = Srgb {
+//!     r: 0.25,
+//!     g: 0.75,
+//!     b: 0.25,
+//! };
+//!
+//! assert!(!out_of_bounds.in_bounds());
+//! assert!(in_bounds.in_bounds());
+//! ```
 
 #![warn(missing_debug_implementations, missing_docs, rust_2018_idioms)]
 #![allow(clippy::excessive_precision)]
@@ -91,10 +112,18 @@ pub trait ColorSpace {
 
     /// The color ‘white’.
     const WHITE: Self;
+
+    /// Checks if the color is in bounds.
+    fn in_bounds(self) -> bool;
 }
 
 /// Convert a color from one color space to another.
 pub fn convert<In: CoreColorSpace, Out: CoreColorSpace>(color: In) -> Out {
     let xyz = color.to_xyz();
     Out::from_xyz(xyz)
+}
+
+fn approx_in_range(n: f32, range: std::ops::Range<f32>) -> bool {
+    let fudged_range = range.start - 0.005..range.end + 0.005;
+    fudged_range.contains(&n)
 }

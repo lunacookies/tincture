@@ -60,6 +60,12 @@ impl crate::ColorSpace for Oklab {
         a: 0.0,
         b: 0.0,
     };
+
+    fn in_bounds(self) -> bool {
+        crate::approx_in_range(self.l, 0.0..1.0)
+            && crate::approx_in_range(self.a, -1.0..1.0)
+            && crate::approx_in_range(self.b, -1.0..1.0)
+    }
 }
 
 #[allow(clippy::many_single_char_names)]

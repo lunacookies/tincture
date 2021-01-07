@@ -21,6 +21,12 @@ impl crate::ColorSpace for LinearRgb {
         g: 1.0,
         b: 1.0,
     };
+
+    fn in_bounds(self) -> bool {
+        crate::approx_in_range(self.r, 0.0..1.0)
+            && crate::approx_in_range(self.g, 0.0..1.0)
+            && crate::approx_in_range(self.b, 0.0..1.0)
+    }
 }
 
 impl crate::CoreColorSpace for LinearRgb {

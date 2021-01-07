@@ -43,4 +43,8 @@ impl crate::ColorSpace for Oklch {
             unnormalized_radians: 0.0,
         },
     };
+
+    fn in_bounds(self) -> bool {
+        crate::approx_in_range(self.l, 0.0..1.0) && crate::approx_in_range(self.c, 0.0..1.0)
+    }
 }

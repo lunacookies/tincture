@@ -26,6 +26,12 @@ impl crate::ColorSpace for Xyz {
         y: 1.0,
         z: 0.108883,
     };
+
+    fn in_bounds(self) -> bool {
+        crate::approx_in_range(self.x, 0.0..0.95047003)
+            && crate::approx_in_range(self.y, 0.0..1.0)
+            && crate::approx_in_range(self.z, 0.0..1.08883)
+    }
 }
 
 impl crate::CoreColorSpace for Xyz {
