@@ -1,129 +1,120 @@
-//! A crate for converting colors between different color spaces.
-//!
-//! Color spaces can be converted between one another using [`convert`]:
-//!
-//! ```
-//! use tincture::{LinearRgb, Oklab};
-//!
-//! let rebeccapurple = LinearRgb {
-//!     r: 0.4,
-//!     g: 0.2,
-//!     b: 0.6,
-//! };
-//!
-//! let oklab: Oklab = tincture::convert(rebeccapurple);
-//!
-//! assert_eq!(
-//!     oklab,
-//!     Oklab {
-//!         l: 0.66066486,
-//!         a: 0.079970956,
-//!         b: -0.095915854,
-//!     },
-//! );
-//! ```
-//!
-//! Variations on the core color spaces do not implement [`CoreColorSpace`], which is necessary for [`convert`].
-//! Instead, they implement `From<ACoreColorSpace>`, allowing you to convert this variation to its corresponding core color space and call [`convert`].
-//! Examples of variations include [`Oklch`] (a variation on [`Oklab`]) and [`Srgb`] (a variation on [`LinearRgb`]).
-//!
-//! ```
-//! use tincture::{Hue, LinearRgb, Oklab, Oklch, Srgb};
-//!
-//! // `Oklch` is a variation on `Oklab` (`Oklch` uses polar coordinates).
-//! let peach = Oklch {
-//!     l: 0.8,
-//!     c: 0.25,
-//!     h: Hue::from_degrees(40.0).unwrap(),
-//! };
-//!
-//! // This means we can create an `Oklab` using `From`.
-//! let oklab = Oklab::from(peach);
-//!
-//! // We can now convert `oklab` to any other core color space, such as `LinearRgb`.
-//! let linear_rgb: LinearRgb = tincture::convert(oklab);
-//!
-//! // `Srgb` is a variant of `LinearRgb`, so we again create one using `From`.
-//! let srgb = Srgb::from(linear_rgb);
-//! ```
-//!
-//! _All_ color spaces implement [`ColorSpace`], which provides the constants `BLACK` and `WHITE`:
-//!
-//! ```
-//! use tincture::{ColorSpace, Srgb};
-//!
-//! assert_eq!(Srgb::BLACK, Srgb { r: 0.0, g: 0.0, b: 0.0 });
-//! assert_eq!(Srgb::WHITE, Srgb { r: 1.0, g: 1.0, b: 1.0 });
-//! ```
-//!
-//! [`ColorSpace`] also provides the [`in_bounds`] method:
-//!
-//! ```
-//! use tincture::{ColorSpace, Srgb};
-//!
-//! let out_of_bounds = Srgb {
-//!     r: 2.0,
-//!     g: -100.0,
-//!     b: 0.5,
-//! };
-//!
-//! let in_bounds = Srgb {
-//!     r: 0.25,
-//!     g: 0.75,
-//!     b: 0.25,
-//! };
-//!
-//! assert!(!out_of_bounds.in_bounds());
-//! assert!(in_bounds.in_bounds());
-//! ```
-
-#![warn(missing_debug_implementations, missing_docs, rust_2018_idioms)]
 #![allow(clippy::excessive_precision)]
 
-mod hex;
-mod hue;
-mod linear_rgb;
-mod oklab;
-mod oklch;
-mod srgb;
-mod xyz;
-
-pub use hex::Hex;
-pub use hue::Hue;
-pub use linear_rgb::LinearRgb;
-pub use oklab::Oklab;
-pub use oklch::Oklch;
-pub use srgb::Srgb;
-pub use xyz::Xyz;
-
-/// A color space that can be converted to any other `CoreColorSpace`.
-pub trait CoreColorSpace {
-    /// Convert a color in the XYZ color space to the color space that `Self` represents.
-    fn from_xyz(xyz: Xyz) -> Self;
-
-    /// Convert the color of `Self` to the XYZ color space.
-    fn to_xyz(self) -> Xyz;
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+pub struct Oklab {
+    pub l: f32,
+    pub a: f32,
+    pub b: f32,
 }
 
-/// A color space.
-pub trait ColorSpace {
-    /// The color ‘black’.
-    const BLACK: Self;
-
-    /// The color ‘white’.
-    const WHITE: Self;
-
-    /// Checks if the color is in bounds.
-    fn in_bounds(self) -> bool;
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+pub struct Oklch {
+    pub l: f32,
+    pub c: f32,
+    pub h: f32,
 }
 
-/// Convert a color from one color space to another.
-pub fn convert<In: CoreColorSpace, Out: CoreColorSpace>(color: In) -> Out {
-    let xyz = color.to_xyz();
-    Out::from_xyz(xyz)
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+pub struct LinearSrgb {
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
 }
 
-fn approx_in_range(n: f32, range: std::ops::Range<f32>) -> bool {
-    let fudged_range = range.start - 0.005..range.end + 0.005;
-    fudged_range.contains(&n)
+#[derive(Debug, Clone, Copy, PartialEq, PartialOrd, Default)]
+pub struct Srgb {
+    pub r: f32,
+    pub g: f32,
+    pub b: f32,
+}
+
+pub fn linear_srgb_to_srgb(c: LinearSrgb) -> Srgb {
+    let nonlinearize = |x: f32| {
+        if x >= 0.0031308 {
+            x.powf(1.0 / 2.4) * 1.055 - 0.055
+        } else {
+            x * 12.92
+        }
+    };
+
+    Srgb { r: nonlinearize(c.r), g: nonlinearize(c.g), b: nonlinearize(c.b) }
+}
+
+pub fn srgb_to_linear_srgb(c: Srgb) -> LinearSrgb {
+    let linearize = |x: f32| {
+        if x >= 0.04045 {
+            ((x + 0.055) / 1.055).powf(2.4)
+        } else {
+            x / 12.92
+        }
+    };
+
+    LinearSrgb { r: linearize(c.r), g: linearize(c.g), b: linearize(c.b) }
+}
+
+pub fn linear_srgb_to_oklab(c: LinearSrgb) -> Oklab {
+    let l = 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b;
+    let m = 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b;
+    let s = 0.0883024619 * c.r + 0.2817188376 * c.g + 0.6299787005 * c.b;
+
+    let l_ = l.cbrt();
+    let m_ = m.cbrt();
+    let s_ = s.cbrt();
+
+    Oklab {
+        l: 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+        a: 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+        b: 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_,
+    }
+}
+
+pub fn oklab_to_linear_srgb(c: Oklab) -> LinearSrgb {
+    let l_ = c.l + 0.3963377774 * c.a + 0.2158037573 * c.b;
+    let m_ = c.l - 0.1055613458 * c.a - 0.0638541728 * c.b;
+    let s_ = c.l - 0.0894841775 * c.a - 1.2914855480 * c.b;
+
+    let l = l_ * l_ * l_;
+    let m = m_ * m_ * m_;
+    let s = s_ * s_ * s_;
+
+    LinearSrgb {
+        r: 4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+        g: -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+        b: -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
+    }
+}
+
+pub fn oklab_to_oklch(c: Oklab) -> Oklch {
+    Oklch { l: c.l, c: c.a.hypot(c.b), h: c.b.atan2(c.a) }
+}
+
+pub fn oklch_to_oklab(c: Oklch) -> Oklab {
+    Oklab { l: c.l, a: c.c * c.h.cos(), b: c.c * c.h.sin() }
+}
+
+impl Srgb {
+    pub fn hex(self) -> u32 {
+        let (r, g, b) = self.components();
+        (r as u32) << 16 | (g as u32) << 8 | b as u32
+    }
+
+    pub fn components(self) -> (u8, u8, u8) {
+        let scale = |n: f32| (n * 255.0).round() as u8;
+        (scale(self.r), scale(self.g), scale(self.b))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn hex() {
+        assert_eq!(Srgb { r: 0.0, g: 0.0, b: 0.0 }.hex(), 0x000000);
+        assert_eq!(Srgb { r: 1.0, g: 0.0, b: 0.0 }.hex(), 0xFF0000);
+        assert_eq!(Srgb { r: 0.0, g: 1.0, b: 0.0 }.hex(), 0x00FF00);
+        assert_eq!(Srgb { r: 0.0, g: 0.0, b: 1.0 }.hex(), 0x0000FF);
+        assert_eq!(Srgb { r: 1.0, g: 1.0, b: 1.0 }.hex(), 0xFFFFFF);
+        assert_eq!(Srgb { r: 0.5, g: 0.3, b: 0.8 }.hex(), 0x804DCC);
+    }
 }
