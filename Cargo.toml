@@ -2,7 +2,7 @@
 categories = ["graphics"]
 description = "Convert colors between sRGB, Oklab and related color spaces"
 documentation = "https://docs.rs/tincture"
-edition = "2018"
+edition = "2021"
 homepage = "https://github.com/arzg/tincture"
 keywords = ["color", "colorspace", "rgb"]
 license = "MIT OR Apache-2.0"
